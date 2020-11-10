@@ -19,7 +19,7 @@ env:
 
 stages:
   - name: test_user_install
-    if: type = cron
+    if: (type = cron) OR (commit_message =~ /^.*(test_install).*$/)
   - test
   - name: package_dev
     if: tag =~ ^v(\d+|\.)+[a-z]\d+$
@@ -56,15 +56,29 @@ jobs:
         - holoviz clean-data --path=examples
 
     - &package_test
-      <<: *default
       stage: test_user_install
-      env: DESC="Test conda package on pyviz/label/dev"
+      env: DESC="Test conda package on pyviz python 3.6"
+      os: linux
+      install:
+        - pip install pyctdev && doit miniconda_install && pip uninstall -y doit pyctdev
+        - export PATH="$HOME/miniconda/bin:$PATH" && hash -r
+        - conda config --set always_yes True
+        - conda install -c pyviz/label/dev "pyctdev>=0.5"
+        - conda update conda-build
       before_script:
         # TODO: pyctdev should just support this whole section
         - mkdir $HOME/tmp && cp tox.ini dodo.py $HOME/tmp && cd $HOME/tmp
-        - doit test_user_install_part1
+        - doit test_user_install_part1_py36
         - source activate holoviz-tutorial
       script: doit test_user_install_part2_conda
+
+    - <<: *package_test
+      env: DESC="Test conda package on pyviz python 3.7"
+      before_script:
+        # TODO: pyctdev should just support this whole section
+        - mkdir $HOME/tmp && cp tox.ini dodo.py $HOME/tmp && cd $HOME/tmp
+        - doit test_user_install_part1_py37
+        - source activate holoviz-tutorial
 
     - <<: *package_test
       env: DESC="Test package on pip"
