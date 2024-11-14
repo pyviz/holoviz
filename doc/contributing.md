@@ -53,7 +53,7 @@ HoloViz users are recommended to ask their usage questions on the [HoloViz Disco
 Answering questions on the HoloViz Discourse Forum, or even just trying to answer some random questions, is a very good way to learn how to use the HoloViz tools.
 ```
 
-Some users also ask questions on [StackOverflow](https://stackoverflow.com/), which isn't much monitored by the HoloViz team, so we would greatly appreciate any help there. 
+Some users also ask questions on [StackOverflow](https://stackoverflow.com/), which isn't much monitored by the HoloViz team, so we would greatly appreciate any help there.
 
 ### Outreach
 
@@ -82,52 +82,9 @@ The first step to working on any source code is to install Git as the source cod
 
 As an external contributor, you do not have permission to submit code directly to any of the repositories. Github offers you to fork the repository, which will create a copy of the repository, on which you will have the right to work freely. Follow [these instructions](https://docs.github.com/en/get-started/quickstart/fork-a-repo) to find out how to fork and clone a repository.
 
-The HoloViz developers rely on [Conda](https://conda.io/docs/intro.html) to manage their virtual environments. We **recommend** you install Conda too to have an experience as close as possible to those of the core developers. To install Conda on any platform, you can [install Miniconda](https://docs.conda.io/en/latest/miniconda.html). 
+The HoloViz developers rely on [Pixi](https://pixi.sh/latest), a developer tool that facilitates maintaining all of the holoviz projects. See [](#### Pixi) for more details.
 
-The HoloViz developers rely on [pyctdev](https://github.com/holoviz-dev/pyctdev), a custom developer tool that facilitates maintaining all of the holoviz projects. pyctdev is an extension of the task running tool [doit](https://pydoit.org/). We **recommend** that you install `pyctdev`:
-
-```bash
-conda install -c pyviz/label/dev "pyctdev>0.5.0"
-```
-
-Once `pyctdev` is available and you are in the cloned (e.g. panel) repository, you can create a new virtual environment with the `env_create` *doit* command with the appropriate channels:
-
-```bash
-doit env_create -c channel1 -c channel2 --name=dev-env --python=3.x
-```
-
-Don't forget to activate this environment:
-
-```bash
-conda activate dev-env
-```
-
-To perform an editable install of the project you are working on, including all the dependencies required to run the full unit test suite, run the `develop_install` with the appropriate channels and options:
-
-```bash
-doit develop_install -c channel1 -c channel2 -o tests -o ... -o ...
-```
-
-For example:
-
-```bash
-doit develop_install -c pyviz/label/dev -c conda-forge -o tests -o examples
-```
-
-Depending on the options you have chosen to install (usually `-o tests` for the unit tests, `-o examples` to run the examples notebooks, ...), the following commands will run:
-
-* The unit tests: `doit test_unit.`
-* The examples tests: `doit test_examples.`
-
-```{warning}
-The *options* and *commands* are not standardized across the HoloViz projects. Refer to the project documentation for the exact commands to run.
-```
-
-```{hint}
-The reference sources to find out which commands to run to install the correct dependencies and to execute the tests and other tasks are the **Github Actions Workflows** files that you can find in the `.github` folder of each repository. 
-```
-
-At this step, you should have your environment set up, being able to run tests and a clone of the source repository. The next step is to create a branch and start making changes. Before committing these changes, make sure the tests still pass by running them. The HoloViz source codes are stringent concerning styling (e.g., they're not using [black](https://github.com/psf/black)). Try to write code that follows the style of the surrounding code. Once you are done with your changes, you can commit them. It is good practice to break down big changes into smaller chunks, and each chunk has its own commit with a message that summarizes it. Now you can push the branch to your clone and create a *pull request* from your clone to the original repository. This [Github Gist](https://gist.github.com/Chaser324/ce0505fbed06b947d962) describes these GitHub steps in more detail.
+After you have cloned the repo and set up Pixi, the next step is to create a branch and start making changes. Before committing these changes, make sure the tests still pass by running them with `pixi run test-unit` and passes the `lint` with `pixi run lint`. Once you are done with your changes, you can commit them. It is good practice to break down big changes into smaller chunks, and each chunk has its own commit with a message that summarizes it. Now you can push the branch to your clone and create a *pull request* from your clone to the original repository. This [Github Gist](https://gist.github.com/Chaser324/ce0505fbed06b947d962) describes these GitHub steps in more detail.
 
 The *pull request* you make should reference the *issue* you are attempting to close (i.e. `Fixes #issuenumber`) and include a description of the changes you made. Changes affecting the visual properties should include screenshots or GIFs.
 
@@ -165,8 +122,8 @@ The HoloViz group owns a few GitHub organizations:
 
 * [holoviz](https://github.com/holoviz/) is the main one where you are likely to contribute. It hosts the core packages maintained by the group.
 * [holoviz-dev](https://github.com/holoviz-dev/) hosts two main types of repositories:
-    * Packages that support maintaining the core HoloViz packages, including, for instance, `nbsite`, `nbsmoke`, `pyctdev`, `pyct` and `autover`. These support packages were developed when no alternative, or satisfying alternative, was available at the time the group needed them.
-    * Repositories that are only used to host *dev* builds of the core packages websites, i.e., no actual work is done on these repositories. They just get updated automatically in a CI process. 
+    * Packages that support maintaining the core HoloViz packages, including, for instance, `nbsite`, `pyct` and `autover`. These support packages were developed when no alternative, or satisfying alternative, was available at the time the group needed them.
+    * Repositories that are only used to host *dev* builds of the core packages websites, i.e., no actual work is done on these repositories. They just get updated automatically in a CI process.
 * [holoviz-topics](https://github.com/holoviz-topics/) hosts repositories that demonstrate concrete usage of the HoloViz tools.
 * [holoviz-demos](https://github.com/holoviz-demos/) hosts some demos, mostly Panel apps. It is meant to be removed.
 * [holoviz-community](https://github.com/holoviz-community/) is a place for the HoloViz community to host repositories that are going to be nicely exposed under the HoloViz umbrella
@@ -188,9 +145,7 @@ In more detail:
     * [jupyter-panel-proxy](https://github.com/holoviz/jupyter-panel-proxy): Jupyter Server Proxy for Panel
 * [holoviz-dev](https://github.com/holoviz-dev/)
     * [nbsite](https://github.com/holoviz/nbsite): Build a tested, sphinx-based website from notebooks
-    * [nbsmoke](https://github.com/holoviz-dev/nbsmoke): Basic notebook checks. Do they run? Do they contain lint?
-    * [pyctdev](https://github.com/holoviz-dev/pyctdev): Python packaging Common Tasks for Developers
-    * [autover](https://github.com/holoviz-dev/autover): Provides consistent and up-to-date version strings for Python packages. 
+    * [autover](https://github.com/holoviz-dev/autover): Provides consistent and up-to-date version strings for Python packages.
     * [pyct](https://github.com/holoviz-dev/pyct): Python packaging Common Tasks
     * [blog](https://github.com/holoviz-dev/blog): The HoloViz blog
     * [status-dashboard](https://github.com/holoviz-dev/status-dashboard): Status Dashboard for HoloViz Project
@@ -233,7 +188,6 @@ The core packages have their repository that, except in a few cases, all share t
 * The tests are nested under the package directory, e.g., at `panel/tests`. The tests are then automatically bundled in the source distribution, which makes it a little easier for repackagers to run the tests.
 * The `examples` and the `doc` folder share the same structure, e.g. you will find `panel/doc/user_guide`  and `panel/examples/user_guide`. The `examples` folder contains Jupyter Notebooks, while the `doc` folder usually contains *reStructuredText* and *Markdown* files. The HoloViz packages generally have `pyct` as a build dependency, which can be used to add an `examples` command to a project (e.g. `panel examples`) to make it easier for users to download the project notebooks. The `examples` folder is bundled within the package source, so users running `panel examples` get the notebooks copied from the package to a local directory. The `doc` folder isn't bundled within the package source.
 * The `.github` directory contains GitHub specific configuration files, e.g., for GitHub Actions.
-* Optional: the `conda.recipe` directory contains a conda recipe template used by the building tooling when creating a conda package.
 * Optional: the `binder` directory contains configuration files to setup [binder](https://mybinder.org/)
 
 
@@ -248,56 +202,49 @@ The HoloViz projects follow the standard Github workflow:
 
 ### Tooling
 
-#### Conda
+#### Conda ecosystem
 
-The HoloViz group relies heavily on the [conda package manager](https://conda.io/docs/intro.html) for the following reasons:
+The HoloViz group relies heavily on the [conda ecosystem](https://conda.io/docs/intro.html) for the following reasons:
 
 * The HoloViz group consists of people who have a scientific background. Installing the Python scientific libraries was at some point a complicated task to achieve with `pip` as these libraries usually depend on binary dependencies that need to be compiled, a step that pip delegates to whatever tool is installed on your machine. `conda` was created to solve this exact problem and the HoloViz group was an early user of this solution. While it's important to note that installing scientific libraries with `pip` has become a smoother experience (notably because more wheels are being distributed), installing some packages like those of the Python geo-stack (`rasterio`, `pyproj`, etc.) still proves to be challenging, and `conda` *usually* provides a better experience.
 * The core maintainers of the HoloViz group are employed by [Anaconda](https://www.anaconda.com/), and as such, it makes sense for the group to use `conda`
 * Some HoloViz-maintained packages such as `Panel` require software like `node.js`, which `pip` cannot install. In contrast, they can be installed with `conda`. `conda` allows to create a complete dev environment without having to install other software from another way, e.g., with `brew` on macOS.
 
-To contribute to HoloViz, we **recommend** that you use `conda`. You would have a closer experience with the maintainers, and they will be in a better position to help you set up your dev environment and debug whatever issue you may encounter.
+To contribute to HoloViz, we **recommend** that you use the `conda ecosystem`. You would have a closer experience with the maintainers, and they will be in a better position to help you set up your dev environment and debug whatever issue you may encounter.
 
-To install Conda on any platform, see the [Download conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/download.html) section of the [conda documentation](https://conda.io/docs/index.html).
+#### Pixi
 
-Of course, this is not a strict requirement, and you can decide to use `pip` instead!
+[Pixi](https://pixi.sh/latest/) is a fast software package manager built on top of the conda ecosystem. It is used to simplify the management of the environments and tasks across projects.
 
-#### Pyctdev
+In each core HoloViz repository, you will find a few files that are of importance for `pixi`:
 
-[pyctdev](https://github.com/holoviz-dev/pyctdev) stands for *python packaging common tasks for developers*, it is a developer tool built by the HoloViz group in an attempt to simplify managing Python projects, by providing a way to declare how to run the usual tasks required to maintain a project, such as running its unit tests or building its documentation, and by standardizing the way to execute these tasks with e.g. `doit test_unit` or `doit build_website`. `pyctdev` relies on [doit](https://pydoit.org/) to provide a command-line interface to developers (e.g. `doit test_unit`) and can be as such seen as an extension of `doit`. `doit` allows to register *tasks* that consist of a sequence of *actions*, an action being either a command line instruction (e.g. `flake8 .`) or the execution of a Python function. `pyctdev` comes with various common Python tasks dedicated to manage a project, such as the `develop_install` task (executed with `doit develop_install`) that will install the project in development mode with its optional development dependencies.
+* `pixi.toml` is where the environments and tasks is declared.
+* `pixi.lock` is the lock file that is generated by `pixi` and that contains the exact versions of the dependencies used in the environment.
+* `scripts` is a directory that contains scripts that which is used by `pixi`.
 
-By unifying the way to execute these common tasks, `pyctdev` makes it easier to work across the HoloViz projects. It also makes it easier to work across environments, as the commands to execute should be the same whether you execute them locally or in a CI environment. In addition, `pyctdev` supports developing with either pip or conda, a unique feature. In practice, however, `pyctdev` is an ambitious project. While it has proven useful to the HoloViz group, it is yet another tool to learn for contributors and maintain for the group. We still **recommend** that you use `pyctdev` to have a development experience closer to the core maintainers. If you feel constrained by the tooling abstraction that is `pyctdev,` you can ignore it and reach out to the tools you are most comfortable with. In that case, you will have to inspect the files of the project you are contributing to and find what tasks you need to run. In each core HoloViz repository, you will find a few files that are of importance for `doit/pyctdev`:
+Now that the main files are defined, we can go through each step of a typical workflow with `pixi`, assuming that you are in a cloned repository:
 
-* `dodo.py` is a Python module that allows adding per-project `doit` tasks. Refer to [its documentation](https://pydoit.org/contents.html) to learn how to add or modify a task. A quick way to identify a task is to find a Python function named `task_something`, `doit` makes it available as a command line subcommand with `doit something`.
-* `setup.py` is the classic install file of the [setuptools](https://setuptools.pypa.io) build backend. It is the **single source of truth of all the dependencies**. In this file, you will find:
-    * the list of the runtime dependencies required by the package in the `install_requires` key.
-    * multiple extra dependency groups are required to run different tasks in the `extras_require` key. For instance, the `doc` extra group would like the dependencies required to build the documentation site.
-    * in the `extras_require` key, you will also find the dependencies required at the *build* time like `setuptools`.
-* `tox.ini` is the configuration file of [tox](https://tox.wiki) and where you will find the **configuration of the `doit` commands**. Indeed `pyctdev` creates tasks out of the commands it contains and uses `tox` directly in some cases (it vendors a version of it).
-
-Now that the main files are defined, we can go through each step of a typical workflow with `pyctdev`, assuming that you are in a cloned repository:
-
-* `conda install -c pyviz/label/dev pyctdev`: to start things off, you need to install `pyctdev`. It is available on the `pyviz` channel, and we recommend installing a dev release from the dev channel `pyviz/label/dev` to get a more up-to-date version
-* `doit env_create -c pyviz -c conda-forge --python=3.8 --name=my_dev_env`: once `pyctdev` is installed, you can run the `env_create` command to create a conda environment that will have the Python version and the name you want, and will fetch packages from the channels you have listed.
-* `conda activate my_dev_env`: to activate the environment you've just created.
-* `doit -c pyviz -c conda-forge develop_install -o tests -o examples`: the `develop_install` executes three actions, (1) it installs the *build* dependencies (including, e.g., `setuptools`), (2) it installs the *runtime* dependencies and the extra dependencies that are listed with the `-o` flag (in the example that would be the *tests* and *examples* groups of dependencies), and (3) it installs the package you're working on in *editable* mode (with `pip install --no-deps --no-build-isolation -e .`).
-* `doit test_flakes` (or sometimes `doit test_lint`): run linting on the project code source, e.g., with `flake8`.
-* `doit test_unit`: run the Python unit tests, i.e., the tests you will find in the `/tests` folder, most likely with `pytest`.
-* `doit test_examples`: smoke test the  *examples*, i.e., the notebooks you will find in the `/examples` folder.
+* Install `pixi` if you havent already, instructions are available [here](https://pixi.sh/latest/#installation).
+* Run `pixi install` this will create the lock file with all the dependencies of different environments. This can take a couple of minutes.
+* Run `pixi task list` to see the list of available tasks.
+* Choose a task to run, for example `pixi run test-unit` to run the unit tests. If multiple environments are available, you get a menu and you can select one of them. You can specify the environment with the `--environment/-e` flag, e.g. `pixi run -e test-core test-unit`.
+* First time you run a task in an environment it will download and install packages into the `.pixi` directory.
 
 ### Documentation
 
 #### nbsite
 
-Most of the packages maintained by the HoloViz group have a website. Those not promoted for usage outside the group don't have a website like `pyctdev`. HoloViz being dedicated to making data visualization simpler in Python, it made sense for the group to develop a way to generate websites out of a collection of Jupyter Notebooks. As a result, [nbsite](https://github.com/holoviz-dev/nbsite) was created to achieve that goal. `nbsite` is based on [sphinx](https://www.sphinx-doc.org) and is the tool used by all the projects to build their site. `nbsite` provides two important features:
+Most of the packages maintained by the HoloViz group have a website. HoloViz being dedicated to making data visualization simpler in Python, it made sense for the group to develop a way to generate websites out of a collection of Jupyter Notebooks. As a result, [nbsite](https://github.com/holoviz-dev/nbsite) was created to achieve that goal. `nbsite` is based on [sphinx](https://www.sphinx-doc.org) and is the tool used by all the projects to build their site. `nbsite` provides two important features:
 
-* A Sphinx `NotebookDirective` allows inserting an evaluated notebook in a document. It has a few useful parameters like `offset` that takes a number that will be the number of top cells not rendered. 
+* A Sphinx `NotebookDirective` allows inserting an evaluated notebook in a document. It has a few useful parameters like `offset` that takes a number that will be the number of top cells not rendered.
 * It can build a gallery from an organized collection of Notebooks.
 
 Building a site with `nbsite` is usually a two-step process:
 
 1. `nbsite generate-rst ...` looks for notebooks in the `examples` folder and generates their corresponding *reStructuredText* files. For instance, if the notebook `examples/user_guide/Data.ipynb` is found, then the corresponding file `doc/user_guide/Data.rst` is created and includes the `NotebookDirective` that points to the notebook file to insert it in this document. A similar process applies to the notebooks found in a gallery.
 2. `nbsite build ...` executes the notebooks and builds the website.
+
+These steps can also be called with `pixi run docs-build`.
 
 After these steps, you should find a `builtdocs` folder in the repository that contains the static site built by nbsite/sphinx. When the websites are built in the continuous integration system, the content of the `builtdocs` folder is pushed to a `gh-pages` branch. The details of this process can be found in the `docs.yaml` Github Action workflow of each project, located in the `.github/workflows` folder.
 
@@ -362,30 +309,26 @@ These buckets are managed by @jlstevens and @philippjfr.
 
 Some of the sites have their own domain name:
 
-* datashader.org
-* holoviews.org
-* geoviews.org
+* [datashader.org](https://datashader.org)
+* [holoviews.org](https://holoviews.org)
+* [geoviews.org](https://geoviews.org)
 
 While others are available as subdomains of holoviz.org:
 
-* hvplot.holoviz.org
-* panel.holoviz.org
-* lumen.holoviz.org
-* param.holoviz.org
-* colorcet.holoviz.org
+* [hvplot.holoviz.org](https://hvplot.holoviz.org)
+* [panel.holoviz.org](https://panel.holoviz.org)
+* [lumen.holoviz.org](https://lumen.holoviz.org)
+* [param.holoviz.org](https://param.holoviz.org)
+* [colorcet.holoviz.org](https://colorcet.holoviz.org)
 
 ### Testing
 
-While `pyctdev` acts as the task runner, other tools run the tests. There are four main kinds of tests that a HoloViz project may run:
+There are four main kinds of tests that a HoloViz project may run:
 
-* *Linters*: running programs that check Python source files for errors and styling issues. Most HoloViz projects rely on [Flake8](https://flake8.pycqa.org) and use the `doit test_flakes` command. Some projects may rely on [pre-commit](https://pre-commit.com/) to run the linters on every commit to avoid having the CI fail in linting issues, which are best found locally. Notebooks can also be linted, this is done either by [nbsmoke](https://github.com/holoviz-dev/nbsmoke) or [nbqa](https://nbqa.readthedocs.io/).
-* *Unit tests*: the HoloViz projects rely on [pytest](https://docs.pytest.org/) to run their unit tests, sometimes with some additional pytest plugins. [pytest-cov](https://pytest-cov.readthedocs.io/) usage is pretty standard across the projects, as it provides an easy way to produce coverage reports that can then automatically be uploaded to the [Codecov](https://about.codecov.io/) service. The `doit test_unit` command is usually the one that will run these tests.
-* *Example tests*: the examples tests and the notebooks tests, in which the notebooks found in the `/examples` folder are all executed. Note that their output is not compared with any reference. Instead, the tests only fail if an error is raised while running the notebooks. The projects rely on pytest and either [nbsmoke](https://github.com/holoviz-dev/nbsmoke) or [nbval](https://nbval.readthedocs.io). The `doit test_examples` command is usually the one that will run these tests.
-* *UI tests*: some projects may rely on [Playwright](https://playwright.dev/python/) and [pytest-playwright](https://github.com/microsoft/playwright-pytest) to run tests that check that things get displayed as expected in a browser and those interactions between the client and the backend work as expected. The `doit test_ui` command is usually the one that will run these tests.
-
-```{note}
-We would like not to have to maintain nbsmoke anymore and instead rely on nbqa and nbval.
-```
+* *Linters and Code formatter*: running programs that check Python source files for errors and styling issues. Most HoloViz projects rely on [Ruff](https://docs.astral.sh/ruff) in combination with [pre-commit](https://pre-commit.com/) to run the linters on every commit. You can run lint with `pixi run lint` and the `pre-commit` hook can be installed with `pre-commit run lint-install`.
+* *Unit tests*: the HoloViz projects rely on [pytest](https://docs.pytest.org/) to run their unit tests, sometimes with some additional pytest plugins. The `pixi run test-unit` will run these tests.
+* *Example tests*: the examples tests and the notebooks tests, in which the notebooks found in the `/examples` or `/doc` folder are all executed. Note that their output is not compared with any reference. Instead, the tests only fail if an error is raised while running the notebooks. The projects rely on pytest and [nbval](https://nbval.readthedocs.io). The `pixi run test-example` will run these tests.
+* *UI tests*: some projects may rely on [Playwright](https://playwright.dev/python/) and [pytest-playwright](https://github.com/microsoft/playwright-pytest) to run tests that check that things get displayed as expected in a browser and those interactions between the client and the backend work as expected. The `pixi run test-ui` command will run these tests.
 
 ### Releasing
 
@@ -405,6 +348,7 @@ Releasing a new package version is, in practice, very easy:
 2. that tag must be pushed (e.g. `git push origin v1.9.6a1`)
 
 And that's it, as soon as a new tag is pushed, the *Packages* and *Documentation* Github Actions get triggered, and start building the packages and the documentation, and deploy them.
+The two actions are split up into two jobs: `build` and `publish`. For the packaging action, after all packages are built, it will wait to ask for approval before publishing them.
 
 ```{note}
 Version tags must start with a lowercase `v` and have a period in them, e.g. `v2.0`, `v0.9.8` or `v0.1` and may include the [PEP440](https://peps.python.org/pep-0440/) prerelease identifiers of `a` (alpha), `b` (beta) or `rc` (release candidate) allowing tags such as `v2.0.a3`, `v0.9.8.b3` or `v0.1.rc5`.
@@ -461,9 +405,9 @@ Bumping the version of a package depends on the package's nature:
     * Go to the Github repository
     * Click *Releases*
     * Click *Tags*
-    * Click the most recent tag that you just added 
+    * Click the most recent tag that you just added
     * Click *Create a new release*
-    * Add release notes and publish the release 
+    * Add release notes and publish the release
 1. Find the *conda-forge* recipe of the package you released and update it if required. Pay attention to the build and runtime dependencies and their version pins. If you're not yet a maintainer, add yourself to the list of maintainers and ping an existing maintainer, letting them know the PR is ready and that you have added yourself as a maintainer.
 1. Announce the release (e.g., on Discourse, Discord, Twitter).
 1. If the release is important (e.g., not a bug fix release), it may be worth a blog post.
@@ -504,8 +448,6 @@ Shared credentials are stored in a 1Password vault. Get in touch with one of the
 ##### Blogs
 
 The HoloViz project maintains a blog at https://blog.holoviz.org/ where new major releases are announced.
-
-The former PyViz-named blog is still alive at http://blog.pyviz.org/.
 
 ##### Twitter
 
